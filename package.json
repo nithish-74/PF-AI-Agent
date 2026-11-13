@@ -1,0 +1,26 @@
+{
+  "name": "pf-ai-agent",
+  "version": "1.0.0",
+  "description": "AI agent that helps people fix rejected and stuck EPF claims",
+  "main": "src/diagnose.js",
+  "scripts": {
+    "test": "node --test",
+    "try": "node scripts/try.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nithish-74/pf-ai-agent.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nithish-74/pf-ai-agent/issues"
+  },
+  "homepage": "https://github.com/nithish-74/pf-ai-agent#readme",
+  "dependencies": {
+    "@google/genai": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
