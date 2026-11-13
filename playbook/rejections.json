@@ -1,0 +1,216 @@
+{
+  "version": "0.1",
+  "updated": "2026-11-14",
+  "note": "Rules checked against public sources on 2026-11-14. Items marked verify:true must be re-checked against the live EPFO portal before telling a user.",
+  "reasons": [
+    {
+      "id": "kyc_not_verified",
+      "title": "KYC not verified / Aadhaar not linked to UAN",
+      "match": ["kyc not", "kyc pending", "aadhaar not seeded", "aadhaar not linked", "aadhaar not verified", "uan not linked", "kyc not approved", "kyc details not verified"],
+      "plain": "EPFO can't confirm who you are because your Aadhaar, PAN or bank details are not verified on your PF account.",
+      "who_fixes": "member, sometimes employer",
+      "steps": [
+        "Log in to the EPFO Member Portal (unifiedportal-mem.epfindia.gov.in) with your UAN.",
+        "Go to Manage → KYC and check Aadhaar, PAN and Bank. All three should show 'Verified'.",
+        "If anything is 'Pending', ask your current or last employer's HR to approve it (they approve KYC on their side).",
+        "If Aadhaar is not linked, link it under Manage → KYC using Aadhaar OTP.",
+        "Wait 2–7 days for the status to show 'Verified', then file the claim again."
+      ],
+      "documents": ["Aadhaar", "PAN", "Bank passbook or cancelled cheque"],
+      "refile": true,
+      "typical_days": 7
+    },
+    {
+      "id": "name_mismatch",
+      "title": "Name doesn't match Aadhaar / PAN / bank",
+      "match": ["name mismatch", "name not matching", "name differs", "name as per aadhaar", "member name", "name does not match"],
+      "plain": "The spelling or order of your name on PF records is different from your Aadhaar, PAN or bank account. Even a missing middle name or initial can cause this.",
+      "who_fixes": "member (online if Aadhaar-verified), else member + employer",
+      "steps": [
+        "Compare your name exactly across: PF profile, Aadhaar, PAN and bank account.",
+        "If your UAN is Aadhaar-verified: Member Portal → Manage → Joint Declaration / Modify Basic Details, and correct the name to match Aadhaar.",
+        "If your UAN is NOT Aadhaar-verified: fill the Joint Declaration form with your employer and submit with proof (Aadhaar, PAN, passport etc.).",
+        "If your bank account name is the one that's different, get the bank to correct it first, then update bank KYC on the portal.",
+        "Once the correction shows on your profile, file the claim again."
+      ],
+      "documents": ["Aadhaar", "PAN", "Any one more ID: passport / driving licence / school certificate"],
+      "refile": true,
+      "typical_days": 15
+    },
+    {
+      "id": "dob_mismatch",
+      "title": "Date of birth doesn't match",
+      "match": ["date of birth", "dob mismatch", "dob not matching", "dob differs", "birth date"],
+      "plain": "Your date of birth on PF records is different from your Aadhaar. Often the employer typed it wrong when you joined.",
+      "who_fixes": "member (online if Aadhaar-verified), else member + employer",
+      "steps": [
+        "Check your DOB on the PF profile vs Aadhaar.",
+        "Aadhaar-verified UAN: correct it online via Joint Declaration / Modify Basic Details.",
+        "Not Aadhaar-verified: Joint Declaration through employer with DOB proof (birth certificate, school leaving certificate, passport).",
+        "File the claim again after the corrected DOB shows on your profile."
+      ],
+      "documents": ["Aadhaar", "Birth certificate or school leaving certificate or passport"],
+      "refile": true,
+      "typical_days": 15
+    },
+    {
+      "id": "bank_details",
+      "title": "Bank account problem",
+      "match": ["bank account", "ifsc", "account number", "bank details", "account closed", "inoperative", "bank kyc", "bank not verified", "ifsc not", "neft"],
+      "plain": "The bank account linked to your PF is wrong, closed, inactive, or not verified, so EPFO can't send money to it.",
+      "who_fixes": "member + employer approval",
+      "steps": [
+        "Make sure the account is active and in your own name (not joint as secondary holder).",
+        "Member Portal → Manage → KYC → add or update the bank account with the correct IFSC.",
+        "Ask your employer to approve the new bank KYC.",
+        "Wait for 'Verified', then file again."
+      ],
+      "documents": ["Bank passbook first page or cancelled cheque showing your name, account number and IFSC"],
+      "refile": true,
+      "typical_days": 7
+    },
+    {
+      "id": "cheque_image",
+      "title": "Cheque / passbook image unclear",
+      "match": ["cheque", "check leaf", "passbook", "image not clear", "unclear", "not legible", "blurred", "name not printed", "uploaded document"],
+      "plain": "The cheque or passbook photo you uploaded was blurry, or didn't clearly show your name, account number and IFSC.",
+      "who_fixes": "member",
+      "steps": [
+        "Take a fresh, clear photo of a cancelled cheque or passbook front page in good light.",
+        "Your printed name, account number and IFSC must all be clearly readable.",
+        "If your cheque doesn't have your name printed, use the passbook page instead, or get a personalised cheque book.",
+        "File the claim again and upload the new image."
+      ],
+      "documents": ["Cancelled cheque with printed name, or passbook front page"],
+      "refile": true,
+      "typical_days": 1
+    },
+    {
+      "id": "exit_date",
+      "title": "Date of exit not updated",
+      "match": ["date of exit", "doe not", "exit date", "date of leaving", "not exited", "member not exited", "dol"],
+      "plain": "EPFO still thinks you're working at your old company, so you can't do a final withdrawal from that account.",
+      "who_fixes": "employer, or member (after 2 months with no contribution)",
+      "steps": [
+        "Ask your old employer's HR to mark your date of exit on the employer portal.",
+        "If they don't respond: once 2 months have passed since the last PF contribution, you can mark it yourself — Member Portal → Manage → Mark Exit.",
+        "Pick the correct reason for leaving and verify with Aadhaar OTP.",
+        "After the exit date shows, file the claim again."
+      ],
+      "documents": ["Relieving letter (keep ready)"],
+      "refile": true,
+      "typical_days": 3
+    },
+    {
+      "id": "not_eligible_service",
+      "title": "Not eligible — service period / waiting period",
+      "match": ["not eligible", "insufficient service", "service not", "eligibility", "waiting period", "unemployment", "not completed"],
+      "plain": "EPFO thinks you haven't worked long enough, or haven't waited long enough after leaving, for the type of withdrawal you asked for.",
+      "who_fixes": "member",
+      "steps": [
+        "Check your total service in the passbook. Old jobs that were never transferred may not be counted — transfer them first (see 'Multiple UANs / transfer pending').",
+        "Check the current rules: after the Oct 2025 changes, partial withdrawals need 12 months of service, and full settlement and pension (EPS) withdrawal have longer waiting periods after leaving a job.",
+        "If you truly were eligible (e.g. 10 years of service but rejected as 'insufficient'), this is likely an EPFO error: raise an EPFiGMS grievance with your passbook as proof.",
+        "If you're not yet eligible, choose a withdrawal type you ARE eligible for (e.g. partial withdrawal) instead."
+      ],
+      "documents": ["EPF passbook for all member IDs"],
+      "refile": true,
+      "typical_days": 20,
+      "verify": true
+    },
+    {
+      "id": "multiple_uan_transfer",
+      "title": "Multiple UANs / old PF not transferred",
+      "match": ["multiple uan", "previous account", "transfer pending", "transfer not", "old member id", "service history", "previous employment"],
+      "plain": "Your PF from earlier jobs is sitting in a different account or UAN and hasn't been combined, so your service and balance look smaller than they are.",
+      "who_fixes": "member",
+      "steps": [
+        "Member Portal → View → Service History, to list all your member IDs.",
+        "Online Services → One Member One EPF Account (Transfer Request) to move old balances into the current account.",
+        "If you have two UANs, email or raise a grievance to get the old UAN merged/deactivated.",
+        "Wait for the transfer to complete, then file the claim again."
+      ],
+      "documents": ["Old UAN / member IDs"],
+      "refile": true,
+      "typical_days": 30
+    },
+    {
+      "id": "eps_wage_ceiling",
+      "title": "EPS contribution on wages above ₹15,000",
+      "match": ["exceeds rs15000", "exceeds 15000", "eps service", "wages exceed", "eps contribution", "pension contribution", "eps not eligible"],
+      "plain": "Your employer put money into the pension scheme (EPS) when your salary was too high for it. EPFO wants that corrected before paying you.",
+      "who_fixes": "employer + EPFO field office",
+      "steps": [
+        "Ask your employer HR / their PF consultant to submit a request to transfer the wrongly paid EPS amount back into your EPF account.",
+        "Once the field office approves it, file the claim again.",
+        "If the employer doesn't act within 15 days, raise an EPFiGMS grievance naming the employer."
+      ],
+      "documents": ["Salary slips showing basic + DA above ₹15,000"],
+      "refile": true,
+      "typical_days": 30,
+      "verify": true
+    },
+    {
+      "id": "form_15g",
+      "title": "Form 15G / 15H problem",
+      "match": ["15g", "15h", "assessment year", "tds"],
+      "plain": "The tax form you uploaded to avoid TDS was filled wrongly (often the wrong assessment year), or wasn't allowed.",
+      "who_fixes": "member",
+      "steps": [
+        "Only upload Form 15G (or 15H if you're 60+) if your total income for the year is below the taxable limit.",
+        "Fill the correct financial year and assessment year (assessment year = the year after the financial year).",
+        "Make sure PAN is filled. If unsure, skip 15G — TDS will be deducted, which you can claim back in your ITR.",
+        "File the claim again."
+      ],
+      "documents": ["Correct Form 15G / 15H", "PAN"],
+      "refile": true,
+      "typical_days": 1
+    },
+    {
+      "id": "employer_issue",
+      "title": "Employer problem (DSC / approval / company closed)",
+      "match": ["employer", "dsc", "digital signature", "establishment", "attestation", "not approved by employer", "company closed"],
+      "plain": "Something on your employer's side is blocking the claim — for example they haven't registered their digital signature, haven't approved your request, or the company has shut down.",
+      "who_fixes": "employer; if unavailable, EPFO regional office",
+      "steps": [
+        "Email your old employer's HR with your UAN and the rejection reason, asking them to fix it. Keep the email as proof.",
+        "If the company has closed or doesn't reply in 15 days, raise an EPFiGMS grievance against the establishment.",
+        "For closed companies, the regional EPFO office can process claims with attestation by a bank manager or gazetted officer."
+      ],
+      "documents": ["Appointment / relieving letter or salary slips as proof of employment"],
+      "refile": true,
+      "typical_days": 30
+    },
+    {
+      "id": "wrong_form",
+      "title": "Wrong form or wrong purpose selected",
+      "match": ["wrong form", "form 19", "form 31", "form 10c", "purpose", "incorrect form", "advance"],
+      "plain": "You filed the wrong type of claim — for example a final settlement while still employed, or the wrong reason for a partial withdrawal.",
+      "who_fixes": "member",
+      "steps": [
+        "Still working? Use partial withdrawal (Form 31) and pick the right category.",
+        "Left your job and want everything? Use final settlement (Form 19) for PF, plus Form 10C for pension (EPS) if eligible.",
+        "File the claim again with the correct form."
+      ],
+      "documents": [],
+      "refile": true,
+      "typical_days": 1,
+      "verify": true
+    },
+    {
+      "id": "stuck_no_reason",
+      "title": "Stuck for weeks or rejected with no clear reason",
+      "match": ["sent to field office", "under process", "pending", "no reason", "other reason", "rejected without"],
+      "plain": "Your claim isn't moving, or it was rejected with a vague reason. This needs escalation, not a fix.",
+      "who_fixes": "EPFO — we escalate",
+      "steps": [
+        "If 20+ days have passed since filing, start the escalation ladder below.",
+        "Keep: claim ID, filing date, rejection SMS/screenshot, passbook."
+      ],
+      "documents": ["Claim ID", "Filing date", "Rejection message"],
+      "refile": false,
+      "escalate": true,
+      "typical_days": 30
+    }
+  ]
+}

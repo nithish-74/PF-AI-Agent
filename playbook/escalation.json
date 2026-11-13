@@ -1,0 +1,49 @@
+{
+  "version": "0.1",
+  "note": "Escalation ladder for a claim that is stuck or wrongly rejected. Day counts are from the date the claim was filed.",
+  "ladder": [
+    {
+      "step": 1,
+      "name": "Wait for normal processing",
+      "after_days": 0,
+      "until_days": 20,
+      "action": "EPFO aims to settle claims within 20 days. Track status on the Member Portal / UMANG app.",
+      "where": "unifiedportal-mem.epfindia.gov.in"
+    },
+    {
+      "step": 2,
+      "name": "EPFiGMS grievance",
+      "after_days": 20,
+      "action": "Raise a grievance on EPFO's own grievance portal with the claim ID and rejection reason. Save the Grievance Registration Number.",
+      "where": "epfigms.gov.in",
+      "response_days": 15,
+      "template": "epfigms"
+    },
+    {
+      "step": 3,
+      "name": "Reminder + CPGRAMS",
+      "after_days": 35,
+      "action": "Send a reminder on EPFiGMS, then file on CPGRAMS (Ministry of Labour & Employment → EPFO) quoting the EPFiGMS number. CPGRAMS has an appeal stage EPFiGMS lacks.",
+      "where": "pgportal.gov.in",
+      "response_days": 30,
+      "template": "cpgrams"
+    },
+    {
+      "step": 4,
+      "name": "RTI application",
+      "after_days": 50,
+      "action": "File an RTI with the regional EPFO office asking for the exact reason, the officer who handled it, and the date it was last acted on. ₹10 fee; reply legally due in 30 days.",
+      "where": "rtionline.gov.in",
+      "response_days": 30,
+      "fee_inr": 10,
+      "template": "rti"
+    },
+    {
+      "step": 5,
+      "name": "Regional office / public escalation",
+      "after_days": 80,
+      "action": "Visit or email the Regional PF Commissioner with all reference numbers. Optionally post politely on EPFO's official social media handle with grievance numbers (never post UAN or Aadhaar publicly).",
+      "where": "Regional EPFO office"
+    }
+  ]
+}

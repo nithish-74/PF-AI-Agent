@@ -1,0 +1,22 @@
+{
+  "version": "0.1",
+  "note": "Fill {placeholders}. Never include full Aadhaar number in any letter.",
+  "templates": {
+    "epfigms": {
+      "title": "EPFiGMS grievance",
+      "body": "Subject: PF claim {claim_id} – {status_short} – request for settlement\n\nRespected Sir/Madam,\n\nI, {name} (UAN {uan}), filed a {claim_type} claim (Claim ID {claim_id}) on {filed_date}. {status_sentence}\n\n{problem_sentence}\n\nAll my KYC details (Aadhaar, PAN and bank) are verified on the Member Portal. I request you to kindly process and settle my claim at the earliest, or inform me in writing of the exact deficiency so that I can correct it.\n\nThank you.\n{name}\nMobile: {mobile}"
+    },
+    "cpgrams": {
+      "title": "CPGRAMS complaint",
+      "body": "Ministry: Ministry of Labour and Employment → Employees' Provident Fund Organisation\n\nSubject: EPFiGMS grievance {grievance_no} unresolved – PF claim {claim_id} pending since {filed_date}\n\nI, {name} (UAN {uan}), filed a {claim_type} claim (Claim ID {claim_id}) on {filed_date}. {status_sentence}\n\nI raised EPFiGMS grievance {grievance_no} on {grievance_date}, but it has not been resolved. {problem_sentence}\n\nI request that this be escalated to the Regional PF Commissioner and my claim be settled, or that I be told in writing the exact reason and the specific correction required.\n\n{name}\nMobile: {mobile}"
+    },
+    "rti": {
+      "title": "RTI application",
+      "body": "To,\nThe Central Public Information Officer,\nEmployees' Provident Fund Organisation, Regional Office {regional_office}\n\nSubject: Information under Section 6(1) of the RTI Act, 2005 regarding PF claim {claim_id}\n\nI, {name} (UAN {uan}), filed a {claim_type} claim (Claim ID {claim_id}) on {filed_date}. Despite grievance(s) {grievance_no}, it remains unresolved.\n\nPlease provide the following information:\n1. The current status of Claim ID {claim_id} and the date on which it was last acted upon.\n2. The specific reason(s) for its rejection/pendency, with a copy of the relevant file notings.\n3. The rule, circular or document relied upon for the rejection.\n4. The name and designation of the officer(s) who processed the claim.\n5. The specific correction or document required from me to settle the claim.\n\nI am paying the prescribed fee of ₹10. I request the information within 30 days as required under Section 7(1) of the RTI Act.\n\n{name}\n{address}\nMobile: {mobile}\nDate: {today}"
+    },
+    "employer_email": {
+      "title": "Email to employer HR",
+      "body": "Subject: Request to fix PF issue blocking my claim – UAN {uan}\n\nDear HR team,\n\nI worked at {company} until {exit_date} (Employee ID {employee_id}). My PF claim (Claim ID {claim_id}) was rejected by EPFO with the reason: \"{remark}\".\n\nThis needs action from the employer side: {employer_action}.\n\nCould you please complete this within the next 7 days and confirm by reply? I'm happy to share any document you need.\n\nThank you,\n{name}\nMobile: {mobile}"
+    }
+  }
+}
