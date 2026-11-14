@@ -39,6 +39,15 @@ test('gemini: fix steps always come from playbook, never from AI', async () => {
   assert.ok(!allSteps.includes('agent'), 'AI-written steps must not leak into the plan');
 });
 
+test('remark: real EPFO wording kept, user paraphrase dropped', async () => {
+  fakeGemini(async () => ({ reason_ids: ['name_mismatch'], confidence: 'high', remark: 'Member name mismatch with Aadhaar' }));
+  let r = await diagnose({ text: 'Rejected: Member name mismatch with Aadhaar' });
+  assert.strictEqual(r.extracted.remark, 'Member name mismatch with Aadhaar');
+  fakeGemini(async () => ({ reason_ids: ['cheque_image'], confidence: 'high', remark: 'cheque ki photo saaf nahi hai' }));
+  r = await diagnose({ text: 'cheque ki photo saaf nahi hai' });
+  assert.strictEqual(r.extracted.remark, '');
+});
+
 test('gemini down: falls back to rules', async () => {
   fakeGemini(async () => { throw new Error('quota exceeded'); });
   const r = await diagnose({ text: 'Date of exit not available' });
@@ -63,16 +72,39 @@ test('Aadhaar / UAN numbers are masked before reaching Gemini', async () => {
   assert.ok(sent.includes('12-03-2026') && sent.includes('50000'), 'dates and amounts untouched');
 });
 
-test('plan is translated when user picks Tamil', async () => {
-  let calls = 0;
-  fakeGemini(async ({ system }) => {
-    calls++;
-    if (system.includes('Translate')) return { summary: 'தமிழ்', problems: [], escalation: [], follow_up_question: '' };
-    return { reason_ids: ['bank_details'], confidence: 'high' };
-  });
+// Fake translator: prefixes every string, keeps structure (optionally breaks it)
+function fakeTranslate(prefix, mutate) {
+  const walk = (v) => (Array.isArray(v) ? v.map(walk) : v && typeof v === 'object'
+    ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : typeof v === 'string' ? `${prefix}${v}` : v);
+  return async ({ system, text }) => {
+    if (system.includes('Translate')) { const out = walk(JSON.parse(text)); return mutate ? mutate(out) : out; }
+    return { reason_ids: ['bank_details'], confidence: 'high', summary: 'Bank account closed' };
+  };
+}
+
+test('plan is translated when user picks Tamil; ids and numbers stay', async () => {
+  fakeGemini(fakeTranslate('த '));
   const r = await diagnose({ text: 'bank account closed', lang: 'ta' });
-  assert.strictEqual(calls, 2);
-  assert.strictEqual(r.plan.summary, 'தமிழ்');
+  assert.strictEqual(r.plan.summary, 'த Bank account closed');
+  assert.ok(r.plan.problems[0].steps[0].startsWith('த '));
+  assert.strictEqual(r.plan.problems[0].id, 'bank_details', 'ids never translated');
+  assert.strictEqual(typeof r.plan.problems[0].typical_days, 'number');
+});
+
+test('stray Urdu words are stripped from Hindi', async () => {
+  fakeGemini(fakeTranslate('اگر अगर '));
+  const r = await diagnose({ text: 'bank account closed', lang: 'hi' });
+  const all = JSON.stringify(r.plan);
+  assert.ok(!/[؀-ۿ]/.test(all), 'no Arabic-script text left');
+  assert.ok(r.plan.problems[0].steps[0].startsWith('अगर '));
+});
+
+test('translation that drops a step falls back to English', async () => {
+  fakeGemini(fakeTranslate('हि ', (out) => { out.problems[0].steps.pop(); return out; }));
+  const r = await diagnose({ text: 'bank account closed', lang: 'hi' });
+  assert.ok(!r.plan.problems[0].steps[0].startsWith('हि '), 'English kept');
+  const { byId } = require('../src/playbook');
+  assert.strictEqual(r.plan.problems[0].steps.length, byId.bank_details.steps.length);
 });
 
 test('maskIds leaves short numbers alone', () => {

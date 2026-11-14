@@ -12,6 +12,7 @@ const { diagnose, LANGS } = require('./diagnose');
 const { generateLetters } = require('./letters');
 const { byId, reasons } = require('./playbook');
 const cases = require('./cases');
+const agent = require('./agent');
 const gemini = require('./gemini');
 
 const PUBLIC = path.join(__dirname, '..', 'public');
@@ -118,6 +119,19 @@ async function api(req, res, url) {
     if (!text.trim() && !image) throw new HttpError(400, 'Tell us the problem, or add a photo of the message.');
     const lang = LANGS[body.lang] ? body.lang : 'en';
     return send(res, 200, await diagnose({ text, image, lang }));
+  }
+
+  if (m === 'POST' && pathname === '/api/chat') {
+    rateLimit(req, 80);
+    const body = await readJson(req);
+    const out = await agent.chat({
+      messages: body.messages,
+      image: cleanImage(body.image),
+      lang: body.lang,
+      forWhom: body.for_whom === 'family' ? 'family' : 'self',
+      state: body.state,
+    });
+    return send(res, 200, out);
   }
 
   if (m === 'POST' && pathname === '/api/letters') {

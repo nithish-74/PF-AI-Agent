@@ -1,0 +1,47 @@
+{
+  "version": "0.1",
+  "updated": "2026-11-14",
+  "note": "Everyday EPFO portal help the chat agent may use. Keep each answer short and general; portal menu names change, so the agent tells users to look for the option rather than promising exact screens. Re-check against the live portal before launch.",
+  "basics": [
+    {
+      "id": "forgot_password",
+      "q": "Forgot UAN password",
+      "a": "On the EPFO Member Portal (unifiedportal-mem.epfindia.gov.in) use 'Forgot Password'. You need the UAN and the mobile number linked to it; an OTP comes to that mobile. If the mobile number is no longer in use, it can be changed using Aadhaar-based verification on the same page."
+    },
+    {
+      "id": "find_uan",
+      "q": "Don't know the UAN",
+      "a": "The UAN is printed on salary slips, and the employer's HR can tell it. The Member Portal also has a 'Know your UAN' option that uses the Aadhaar-linked mobile number with an OTP."
+    },
+    {
+      "id": "activate_uan",
+      "q": "UAN not activated / first login",
+      "a": "On the Member Portal choose 'Activate UAN', enter the UAN, name, date of birth and Aadhaar-linked mobile, and set a password using the OTP."
+    },
+    {
+      "id": "claim_status",
+      "q": "Check claim status",
+      "a": "Log in to the Member Portal and open Online Services → Track Claim Status. The UMANG app (EPFO section) also shows claim status and the passbook."
+    },
+    {
+      "id": "passbook",
+      "q": "See PF balance / passbook",
+      "a": "The EPFO passbook is on the passbook portal (passbook.epfindia.gov.in) or in the UMANG app, using the UAN login."
+    },
+    {
+      "id": "how_to_file",
+      "q": "How to file a claim online",
+      "a": "On the Member Portal: Online Services → Claim. Verify the bank account, choose the claim type (full settlement after leaving the job, or partial withdrawal while working), fill the reason, upload the cheque or passbook image if asked, and confirm with the Aadhaar OTP."
+    },
+    {
+      "id": "otp_safety",
+      "q": "Someone asked for OTP or password",
+      "a": "Never share the OTP, password or Aadhaar number with anyone, including people who say they are from EPFO. EPFO does not ask for these on calls or messages."
+    },
+    {
+      "id": "elderly_help",
+      "q": "Elderly member can't use the portal",
+      "a": "A family member can do the online steps on the member's behalf with them present, since OTPs go to the member's Aadhaar-linked mobile. The UMANG app can be easier on a phone."
+    }
+  ]
+}

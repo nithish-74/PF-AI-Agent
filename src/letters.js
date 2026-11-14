@@ -146,7 +146,8 @@ async function translateTemplate(key, lang) {
       text: body,
     });
     const ok = out && typeof out.body === 'string' && placeholders(body).every((p) => out.body.includes(`{${p}}`));
-    const result = ok ? out.body : null;
+    // Strip stray Arabic-script words (e.g. Urdu inside Hindi) but keep line breaks
+    const result = ok ? out.body.replace(/[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]+/g, '').replace(/[ \t]{2,}/g, ' ') : null;
     if (!ok) console.error(`Translation of ${key} dropped placeholders, keeping English only`);
     translationCache.set(cacheKey, result);
     return result;

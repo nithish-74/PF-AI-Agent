@@ -45,8 +45,9 @@
   }
 
   function rerender() {
+    translateStatic();
     if (state.view === 'case') return renderCase();
-    ({ home: renderHome, describe: renderHome, result: renderResult, details: renderDetails })[state.view]();
+    return window.PFChat.render();
   }
 
   function go(view) { state.view = view; rerender(); }
@@ -70,7 +71,7 @@
     langSel.replaceChildren(...Object.keys(state.config.langs).map((code) =>
       h('option', { value: code, selected: code === window.UI.lang }, NATIVE[code] || state.config.langs[code])));
     langSel.addEventListener('change', () => setLang(langSel.value));
-    document.getElementById('topCta').addEventListener('click', () => start('self'));
+    document.getElementById('topCta').addEventListener('click', () => { state.view = 'chat'; history.pushState(null, '', '/'); route(); });
   }
 
   function waHelp(context, cls = 'btn wa') {
@@ -532,9 +533,13 @@
 
   // ---------- boot ----------
   function route() {
-    if (caseIds()) return loadCase();
-    state.view = 'home';
-    renderHome();
+    translateStatic();
+    if (caseIds()) {
+      document.body.classList.remove('chat-page');
+      return loadCase();
+    }
+    state.view = 'chat';
+    window.PFChat.start(state.config, app);
   }
 
   window.addEventListener('popstate', route);
