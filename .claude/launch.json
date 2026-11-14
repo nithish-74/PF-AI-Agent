@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pf-rescue",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--env-file-if-exists=.env", "src/server.js"],
+      "port": 3000,
+      "env": { "DATA_DIR": "data-preview", "ADMIN_KEY": "local-preview-key", "SUPPORT_WHATSAPP": "919000000000" }
+    }
+  ]
+}

@@ -91,4 +91,4 @@ async function diagnose({ text, image, lang = 'en' }) {
   };
 }
 
-module.exports = { diagnose, classify, buildPlan, LANGS };
+module.exports = { diagnose, classify, buildPlan, translatePlan, LANGS };

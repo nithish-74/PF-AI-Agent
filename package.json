@@ -2,10 +2,14 @@
   "name": "pf-ai-agent",
   "version": "1.0.0",
   "description": "AI agent that helps people fix rejected and stuck EPF claims",
-  "main": "src/diagnose.js",
+  "main": "src/server.js",
   "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
     "test": "node --test",
-    "try": "node scripts/try.js"
+    "try": "node --env-file-if-exists=.env scripts/try.js",
+    "letters": "node --env-file-if-exists=.env scripts/letters.js",
+    "reminders": "node --env-file-if-exists=.env scripts/reminders.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +25,6 @@
     "@google/genai": "^3.3.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   }
 }

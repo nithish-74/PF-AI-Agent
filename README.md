@@ -1,74 +1,105 @@
-# PF AI Agent
+# PF AI Agent (PF Rescue)
 
-An AI agent that helps people in India fix **rejected and stuck EPF (provident fund) claims**: it figures out why the claim failed, gives a step-by-step fix in the user's language, and drafts the grievance, CPGRAMS and RTI letters when EPFO doesn't respond.
+Helps people in India fix **rejected and stuck EPF (provident fund) claims**. It works out why the claim failed, gives step-by-step fixes in the user's language, writes the grievance, CPGRAMS, RTI and HR letters, and reminds them when to escalate. It's built so a son or daughter can run the case for an elderly parent.
 
 ## How it works
 
 ```
-user message / voice-note text / screenshot
-        │
-        ▼
- mask Aadhaar, UAN & account numbers
-        │
-        ▼
- Gemini classifies the problem ──(no key / error)──► keyword rules
- (only from playbook ids)
-        │
-        ▼
- fix plan built from the PLAYBOOK  ← AI never writes the steps
-        │
-        ▼
- translated into user's language (Hindi, Tamil, Telugu, …)
+user (or their child) on a phone
+  │  types / speaks / photographs the rejection message
+  ▼
+mask Aadhaar, UAN & account numbers
+  ▼
+Gemini classifies the problem ──(no key / error)──► keyword rules
+(only from playbook ids)                          unsure ──► your team queue
+  ▼
+fix plan from the PLAYBOOK  ← AI never writes the steps
+  ▼
+letters filled locally (EPFiGMS → CPGRAMS → RTI, HR email)
+  ▼
+case tracker: private link, checklist, deadlines, calendar reminders
 ```
 
-**Safety rule:** the AI only *classifies* and *translates*. Every fix step comes from `playbook/`, which is checked by humans, so the agent can't invent EPFO rules.
-
-## Project layout
-
-| Path | What it is |
-|---|---|
-| `playbook/rejections.json` | 13 common rejection reasons → plain explanation, who fixes it, steps, documents, what to ask the employer |
-| `playbook/escalation.json` | Escalation ladder: EPFiGMS → CPGRAMS → RTI → regional office |
-| `playbook/templates.json` | Grievance, CPGRAMS, RTI and employer-email letter templates |
-| `src/diagnose.js` | The agent: classify → build plan → translate |
-| `src/letters.js` | Letter generator: fills grievance / CPGRAMS / RTI / HR email from the diagnosis + user details |
-| `src/escalation.js` | Works out which escalation step is due from the filing date |
-| `src/gemini.js` | Gemini API wrapper |
-| `src/privacy.js` | Masks ID numbers before anything is sent to the AI |
-| `test/` | Tests (run without an API key using a fake Gemini) |
+**Safety rule:** the AI only *classifies* and *translates*. Every fix step comes from `playbook/`, which humans check, so the agent can't invent EPFO rules. Letter translation sends only the blank template to Gemini, never the user's details.
 
 ## Run it
 
 ```bash
 npm install
-cp .env.example .env        # add your free key from https://aistudio.google.com/apikey
-npm test                    # 18 tests, no key needed
-
-# try it (works without a key using rules only)
-node scripts/try.js "claim rejected: name mismatch with aadhaar"
-node scripts/try.js "mera claim reject ho gaya, cheque photo clear nahi tha" hi
-GEMINI_API_KEY=... node scripts/try.js --image rejection.png ta
-
-# ready-to-send letters (sample-details.json is made-up data)
-node scripts/letters.js "status: sent to field office" scripts/sample-details.json
-node scripts/letters.js "Rejected: Date of exit not available" scripts/sample-details.json ta
+cp .env.example .env     # add GEMINI_API_KEY (free: https://aistudio.google.com/apikey), ADMIN_KEY, SUPPORT_WHATSAPP
+npm start                # http://localhost:3000   (team queue: /admin)
+npm test                 # 27 tests, no key needed
 ```
 
-## Letters (Day 3)
+Without a Gemini key everything still works using keyword rules. Answers stay in English, and photos can't be read.
 
-- Picks the right letters: HR email when the employer must act; EPFiGMS → CPGRAMS → RTI when the claim is stuck.
-- Tells you **when** each one can be sent (e.g. CPGRAMS only 35 days after filing), based on `playbook/escalation.json`.
-- Anything unknown stays as a visible blank like `[Your mobile number]` and is listed in `missing`, so the app can ask for it.
-- Only says "KYC is verified" if the user confirmed it. Never includes Aadhaar.
-- Letters to EPFO stay in English; with a language set you also get a translated copy to read. Only the blank template is sent to Gemini, never the user's details.
+Other tools:
+
+```bash
+npm run reminders                                              # who needs a nudge today, with WhatsApp links
+node scripts/try.js "mera claim reject ho gaya, cheque photo clear nahi tha" hi
+node scripts/letters.js "status: sent to field office" scripts/sample-details.json
+```
+
+## The website
+
+| Screen | What it does |
+|---|---|
+| Home | The question box comes first: type, **speak** (voice input in the chosen language), or add a **photo** of the rejection SMS. Choose "Mine" or "My parent or relative" (family mode). Next to it is a worked example (SMS → what we told them). Below: tap-to-use real EPFO messages, what happens next, the EPFO deadline table, and FAQ. 8 languages; page text in English, Hindi and Tamil. |
+| Diagnosis | The problem in plain words, who has to fix it, a numbered checklist, documents to keep ready, and the escalation ladder. If the AI isn't sure, a "WhatsApp us" card instead. |
+| Details | Asks only for what the letters need. Never asks for Aadhaar. |
+| Case page `/c/<id>#<token>` | Private link (the token sits in the `#` part, so it never reaches server logs). Shows "to do now", the next deadline with **add to phone calendar**, the steps checklist, letters with copy / open portal / **I sent it**, "I filed again" and "Money received". |
+| `/admin` | Your queue: every case, most urgent first, with WhatsApp buttons, a way to re-classify a case the AI got wrong, and the total recovered. That's your YC number. |
+
+Design: a "paper and ink" look (cream paper, serif headings, marigold highlighter), always light, even in dark mode. Built for older users: 18px+ text, high contrast, large tap targets, one action per screen, and plain sentences. It works on cheap Android phones, with no app to install.
+
+## Project layout
+
+| Path | What it is |
+|---|---|
+| `playbook/rejections.json` | 13 rejection reasons: plain explanation, who fixes it, steps, documents, what to ask the employer |
+| `playbook/escalation.json` | Escalation ladder: EPFiGMS → CPGRAMS → RTI → regional office |
+| `playbook/templates.json` | Letter templates |
+| `src/diagnose.js` | Classify → build plan → translate |
+| `src/letters.js` | Fills the letters from the diagnosis and user details |
+| `src/escalation.js` | Which escalation step is due, from the filing date |
+| `src/cases.js` | Case tracker: create, update, reminders, team queue |
+| `src/store.js` | JSON-file storage in `data/` (swap for a database later) |
+| `src/server.js` | Web server + API, no framework |
+| `public/` | The website (plain HTML/CSS/JS, no build step) |
+| `test/` | Tests (fake Gemini, temporary data folder) |
+
+## API
+
+| Method | Path | Body / headers |
+|---|---|---|
+| GET | `/api/config` | Languages, WhatsApp number, fee |
+| POST | `/api/diagnose` | `{text, image:{mimeType, base64}, lang}` |
+| POST | `/api/letters` | `{reason_ids, extracted, details, lang}` |
+| POST | `/api/cases` | Creates a case and returns `{id, token, url}` |
+| GET/PATCH | `/api/cases/:id` | Header `X-Case-Token`. PATCH accepts `{details}`, `{step:{key,done}}`, `{event:{type,date,...}}` |
+| GET | `/api/admin/cases` | Header `X-Admin-Key` |
+
+## Deploying
+
+Any Node 22+ host works, for example Render, Railway, Fly.io, or a ₹400/month VPS.
+
+1. Set the env vars from `.env.example` in the host's dashboard. Never commit `.env`.
+2. Start command: `npm start`.
+3. **Cases are saved to disk** (`DATA_DIR`). Use a host with a persistent disk (Render disk, Fly volume, a VPS), or cases will vanish on redeploy. Move to Postgres once you pass a few hundred cases.
+4. Schedule `npm run reminders` every morning (cron), or just run it yourself.
+
+Before taking real users' data: add a short privacy notice (what you store, why, how to delete), keep `ADMIN_KEY` long and secret, and turn on HTTPS. Most hosts do HTTPS for you.
 
 ## Roadmap
 - [x] Day 1 – Playbook, escalation ladder, letter templates
 - [x] Day 2 – AI diagnosis (text + screenshot), privacy masking, translation
-- [x] Day 3 – Letter generator (auto-filled grievance / RTI) + escalation timeline
-- [ ] Day 4 – Mobile-first website
-- [ ] Day 5 – Case tracker, reminders, family mode
-- [ ] Day 6 – Testing with real users
-- [ ] Day 7 – Launch
+- [x] Day 3 – Letter generator + escalation timeline
+- [x] Day 4 – Mobile-first website (voice, photo, 8 languages)
+- [x] Day 5 – Case tracker, reminders, family mode, team queue
+- [ ] Day 6 – Test with 3–5 real people (including one older person)
+- [ ] Day 7 – Deploy and take the first 10 real cases
+
+Later: WhatsApp bot (Meta Business API), have native speakers review the Hindi and Tamil text, button text for the other 5 languages, a database, and payment collection for the success fee.
 
 > This tool gives general guidance based on public EPFO processes. It is not affiliated with EPFO. Always check the official portal.

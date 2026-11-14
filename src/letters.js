@@ -122,10 +122,12 @@ function buildValues(diagnosis, details, today) {
 }
 
 // Which letters make sense for this diagnosis.
-function pickLetters(diagnosis, reasons, employerActions, tl) {
+// `stuck` forces the escalation letters, e.g. a claim that was fixed and
+// re-filed but is again pending past 20 days.
+function pickLetters(reasons, employerActions, tl, forceStuck) {
   const keys = [];
   if (employerActions.length) keys.push('employer_email');
-  const stuck = reasons.some((r) => r.escalate) || (!reasons.length && tl && tl.days_since_filed >= 20);
+  const stuck = forceStuck || reasons.some((r) => r.escalate) || (!reasons.length && tl && tl.days_since_filed >= 20);
   if (stuck) keys.push(...ESCALATION_KEYS);
   return keys;
 }
@@ -164,10 +166,10 @@ async function translateTemplate(key, lang) {
  * @param {string} [opts.lang]     also return a translated copy for the family to read
  * @param {string[]} [opts.only]   force a specific set of letters
  */
-async function generateLetters({ diagnosis, details: raw = {}, today = new Date(), lang = 'en', only } = {}) {
+async function generateLetters({ diagnosis, details: raw = {}, today = new Date(), lang = 'en', only, stuck = false } = {}) {
   const details = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v]));
   const { values, timeline: tl, reasons, employerActions } = buildValues(diagnosis, details, today);
-  const keys = (only || pickLetters(diagnosis, reasons, employerActions, tl)).filter((k) => templates[k]);
+  const keys = (only || pickLetters(reasons, employerActions, tl, stuck)).filter((k) => templates[k]);
   const ladderByTemplate = Object.fromEntries(ladder.filter((s) => s.template).map((s) => [s.template, s]));
 
   const letters = [];
