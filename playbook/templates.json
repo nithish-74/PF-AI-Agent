@@ -1,10 +1,10 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "note": "Fill {placeholders}. Never include full Aadhaar number in any letter.",
   "templates": {
     "epfigms": {
       "title": "EPFiGMS grievance",
-      "body": "Subject: PF claim {claim_id} – {status_short} – request for settlement\n\nRespected Sir/Madam,\n\nI, {name} (UAN {uan}), filed a {claim_type} claim (Claim ID {claim_id}) on {filed_date}. {status_sentence}\n\n{problem_sentence}\n\nAll my KYC details (Aadhaar, PAN and bank) are verified on the Member Portal. I request you to kindly process and settle my claim at the earliest, or inform me in writing of the exact deficiency so that I can correct it.\n\nThank you.\n{name}\nMobile: {mobile}"
+      "body": "Subject: PF claim {claim_id} – {status_short} – request for settlement\n\nRespected Sir/Madam,\n\nI, {name} (UAN {uan}), filed a {claim_type} claim (Claim ID {claim_id}) on {filed_date}. {status_sentence}\n\n{problem_sentence}\n\n{kyc_sentence}I request you to kindly process and settle my claim at the earliest, or inform me in writing of the exact deficiency so that I can correct it.\n\nThank you.\n{name}\nMobile: {mobile}"
     },
     "cpgrams": {
       "title": "CPGRAMS complaint",

@@ -1,0 +1,15 @@
+{
+  "_note": "Made-up sample data for trying the letter generator. Not a real person.",
+  "name": "Ravi Kumar",
+  "uan": "100000000001",
+  "mobile": "9000000000",
+  "address": "12 Sample Street, Chennai 600001",
+  "company": "Example Tech Pvt Ltd",
+  "employee_id": "EX1234",
+  "exit_date": "2026-06-30",
+  "claim_id": "MHBAN000000000000001",
+  "claim_type": "final_settlement",
+  "filed_date": "2026-09-01",
+  "regional_office": "Chennai",
+  "kyc_verified": true
+}

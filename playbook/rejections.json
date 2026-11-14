@@ -9,6 +9,7 @@
       "match": ["kyc not", "kyc pending", "aadhaar not seeded", "aadhaar not linked", "aadhaar not verified", "uan not linked", "kyc not approved", "kyc details not verified"],
       "plain": "EPFO can't confirm who you are because your Aadhaar, PAN or bank details are not verified on your PF account.",
       "who_fixes": "member, sometimes employer",
+      "employer_action": "please approve my pending KYC (Aadhaar / PAN / bank) on the EPFO Employer Portal",
       "steps": [
         "Log in to the EPFO Member Portal (unifiedportal-mem.epfindia.gov.in) with your UAN.",
         "Go to Manage → KYC and check Aadhaar, PAN and Bank. All three should show 'Verified'.",
@@ -26,6 +27,7 @@
       "match": ["name mismatch", "name not matching", "name differs", "name as per aadhaar", "member name", "name does not match"],
       "plain": "The spelling or order of your name on PF records is different from your Aadhaar, PAN or bank account. Even a missing middle name or initial can cause this.",
       "who_fixes": "member (online if Aadhaar-verified), else member + employer",
+      "employer_action": "please approve the Joint Declaration to correct my name in EPFO records to match my Aadhaar",
       "steps": [
         "Compare your name exactly across: PF profile, Aadhaar, PAN and bank account.",
         "If your UAN is Aadhaar-verified: Member Portal → Manage → Joint Declaration / Modify Basic Details, and correct the name to match Aadhaar.",
@@ -43,6 +45,7 @@
       "match": ["date of birth", "dob mismatch", "dob not matching", "dob differs", "birth date"],
       "plain": "Your date of birth on PF records is different from your Aadhaar. Often the employer typed it wrong when you joined.",
       "who_fixes": "member (online if Aadhaar-verified), else member + employer",
+      "employer_action": "please approve the Joint Declaration to correct my date of birth in EPFO records to match my Aadhaar",
       "steps": [
         "Check your DOB on the PF profile vs Aadhaar.",
         "Aadhaar-verified UAN: correct it online via Joint Declaration / Modify Basic Details.",
@@ -59,6 +62,7 @@
       "match": ["bank account", "ifsc", "account number", "bank details", "account closed", "inoperative", "bank kyc", "bank not verified", "ifsc not", "neft"],
       "plain": "The bank account linked to your PF is wrong, closed, inactive, or not verified, so EPFO can't send money to it.",
       "who_fixes": "member + employer approval",
+      "employer_action": "please approve my updated bank KYC on the EPFO Employer Portal",
       "steps": [
         "Make sure the account is active and in your own name (not joint as secondary holder).",
         "Member Portal → Manage → KYC → add or update the bank account with the correct IFSC.",
@@ -91,6 +95,7 @@
       "match": ["date of exit", "doe not", "exit date", "date of leaving", "not exited", "member not exited", "dol"],
       "plain": "EPFO still thinks you're working at your old company, so you can't do a final withdrawal from that account.",
       "who_fixes": "employer, or member (after 2 months with no contribution)",
+      "employer_action": "please mark my date of exit and reason for leaving on the EPFO Employer Portal",
       "steps": [
         "Ask your old employer's HR to mark your date of exit on the employer portal.",
         "If they don't respond: once 2 months have passed since the last PF contribution, you can mark it yourself — Member Portal → Manage → Mark Exit.",
@@ -140,6 +145,7 @@
       "match": ["exceeds rs15000", "exceeds 15000", "eps service", "wages exceed", "eps contribution", "pension contribution", "eps not eligible"],
       "plain": "Your employer put money into the pension scheme (EPS) when your salary was too high for it. EPFO wants that corrected before paying you.",
       "who_fixes": "employer + EPFO field office",
+      "employer_action": "please correct the EPS (pension) contribution for the months my wages were above Rs 15,000, or confirm in writing whether a higher-pension option was exercised, so the field office can settle my claim",
       "steps": [
         "Ask your employer HR / their PF consultant to submit a request to transfer the wrongly paid EPS amount back into your EPF account.",
         "Once the field office approves it, file the claim again.",
@@ -172,6 +178,7 @@
       "match": ["employer", "dsc", "digital signature", "establishment", "attestation", "not approved by employer", "company closed"],
       "plain": "Something on your employer's side is blocking the claim — for example they haven't registered their digital signature, haven't approved your request, or the company has shut down.",
       "who_fixes": "employer; if unavailable, EPFO regional office",
+      "employer_action": "please register / renew the establishment DSC and approve my pending request on the EPFO Employer Portal",
       "steps": [
         "Email your old employer's HR with your UAN and the rejection reason, asking them to fix it. Keep the email as proof.",
         "If the company has closed or doesn't reply in 15 days, raise an EPFiGMS grievance against the establishment.",
